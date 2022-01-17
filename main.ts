@@ -6,8 +6,8 @@ namespace SpriteKind {
     export const chest = SpriteKind.create()
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.e4, function (sprite, otherSprite) {
-    null.destroy()
-    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, statusbar.spriteAttachedTo()).value += -5
+    sprite.destroy()
+    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -5
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -201,6 +201,9 @@ controller.right.onEvent(ControllerButtonEvent.Released, function () {
 })
 controller.left.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, mySprite)
+})
+statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
+    status.spriteAttachedTo().destroy(effects.fire, 500)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.castle.tileDarkGrass3, function (sprite, location) {
     mySprite2.follow(mySprite, 0)
@@ -538,6 +541,8 @@ function createEnemySprites () {
     tiles.placeOnRandomTile(mySprite2, sprites.builtin.forestTiles0)
     tiles.placeOnRandomTile(mySprite3, sprites.castle.tileDarkGrass3)
     tiles.placeOnRandomTile(mySprite4, assets.tile`myTile`)
+    statusbar = statusbars.create(20, 4, StatusBarKind.EnemyHealth)
+    statusbar.attachToSprite(mySprite5)
 }
 controller.up.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, mySprite)
@@ -810,12 +815,12 @@ scene.onOverlapTile(SpriteKind.Player, sprites.castle.rock2, function (sprite, l
     true
     )
 })
+let statusbar: StatusBarSprite = null
 let mySprite3: Sprite = null
 let projectile: Sprite = null
 let mySprite2: Sprite = null
 let mySprite4: Sprite = null
 let mySprite5: Sprite = null
-let statusbar: StatusBarSprite = null
 let mySprite: Sprite = null
 mySprite = sprites.create(img`
     . . . . . . f f f f . . . . . . 
@@ -841,8 +846,6 @@ createEnemySprites()
 scene.cameraFollowSprite(mySprite)
 info.setLife(20)
 music.playMelody("E B C5 A B G A F ", 120)
-statusbar = statusbars.create(20, 4, StatusBarKind.EnemyHealth)
-statusbar.attachToSprite(mySprite5)
 game.onUpdateInterval(1000, function () {
     if (true) {
     	
