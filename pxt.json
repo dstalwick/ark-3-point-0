@@ -2,7 +2,9 @@
     "name": "ark 3 point 0",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.1.0",
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.1"
     },
     "files": [
         "main.blocks",
