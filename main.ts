@@ -855,7 +855,7 @@ createEnemySprites()
 scene.cameraFollowSprite(mySprite)
 info.setLife(20)
 music.playMelody("E B C5 A B G A F ", 120)
-let myMinimap = minimap.minimap()
+let myMinimap = minimap.minimap(MinimapScale.Quarter, 2, 0)
 minimap.includeSprite(myMinimap, mySprite)
 game.onUpdateInterval(1000, function () {
     if (true) {
