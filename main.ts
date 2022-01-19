@@ -8,6 +8,7 @@ namespace SpriteKind {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.e4, function (sprite, otherSprite) {
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -5
+    mySprite2.follow(otherSprite, 51)
 })
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -88,6 +89,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.e3, function (sprite, otherSprite) {
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -3
+    mySprite2.follow(otherSprite, 51)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.swamp.swampTile2, function (sprite, location) {
     mySprite5.follow(mySprite, 20)
@@ -96,7 +98,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, lo
     mySprite4.follow(mySprite, 20)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.builtin.forestTiles0, function (sprite, location) {
-    mySprite2.follow(mySprite, 20)
+	
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
@@ -120,6 +122,12 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 controller.down.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, mySprite)
+})
+sprites.onDestroyed(SpriteKind.e2, function (sprite) {
+    mySprite2.follow(mySprite, 51)
+})
+sprites.onDestroyed(SpriteKind.e3, function (sprite) {
+    mySprite2.follow(mySprite, 51)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -200,14 +208,14 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.right.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, mySprite)
 })
+sprites.onDestroyed(SpriteKind.e4, function (sprite) {
+    mySprite2.follow(mySprite, 51)
+})
 controller.left.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, mySprite)
 })
 statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
     status.spriteAttachedTo().destroy(effects.fire, 500)
-})
-scene.onOverlapTile(SpriteKind.Player, sprites.castle.tileDarkGrass3, function (sprite, location) {
-    mySprite2.follow(mySprite, 0)
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -548,6 +556,8 @@ function createEnemySprites () {
     statusbar.attachToSprite(mySprite4)
     statusbar = statusbars.create(20, 4, StatusBarKind.EnemyHealth)
     statusbar.attachToSprite(mySprite3)
+    mySprite2.follow(mySprite, 51)
+    tiles.placeOnTile(mySprite2, tiles.getTileLocation(23, 23))
 }
 controller.up.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, mySprite)
@@ -631,9 +641,13 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
 info.onLifeZero(function () {
     game.over(false, effects.dissolve)
 })
+sprites.onOverlap(SpriteKind.e1, SpriteKind.e2, function (sprite, otherSprite) {
+    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -5
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.e2, function (sprite, otherSprite) {
     sprite.destroy()
     statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -1
+    mySprite2.follow(otherSprite, 51)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.e4, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
@@ -824,12 +838,18 @@ scene.onOverlapTile(SpriteKind.Player, sprites.castle.rock2, function (sprite, l
     true
     )
 })
+sprites.onOverlap(SpriteKind.e1, SpriteKind.e3, function (sprite, otherSprite) {
+    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -12
+})
+sprites.onOverlap(SpriteKind.e1, SpriteKind.e4, function (sprite, otherSprite) {
+    statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -15
+})
 let statusbar: StatusBarSprite = null
 let mySprite3: Sprite = null
 let projectile: Sprite = null
-let mySprite2: Sprite = null
 let mySprite4: Sprite = null
 let mySprite5: Sprite = null
+let mySprite2: Sprite = null
 let mySprite: Sprite = null
 mySprite = sprites.create(img`
     . . . . . . f f f f . . . . . . 
@@ -849,14 +869,14 @@ mySprite = sprites.create(img`
     . . . . . f f f f f f . . . . . 
     . . . . . f f . . f f . . . . . 
     `, SpriteKind.Player)
-controller.moveSprite(mySprite)
 tiles.setTilemap(tilemap`level1`)
-createEnemySprites()
 scene.cameraFollowSprite(mySprite)
 info.setLife(20)
-music.playMelody("E B C5 A B G A F ", 120)
 let myMinimap = minimap.minimap(MinimapScale.Quarter, 2, 0)
 minimap.includeSprite(myMinimap, mySprite)
+controller.moveSprite(mySprite)
+tiles.placeOnTile(mySprite, tiles.getTileLocation(20, 20))
+music.playMelody("E B C5 A B G A F ", 120)
 game.onUpdateInterval(1000, function () {
     if (true) {
     	
