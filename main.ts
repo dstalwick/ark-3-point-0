@@ -109,26 +109,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, lo
 scene.onOverlapTile(SpriteKind.Player, sprites.builtin.forestTiles0, function (sprite, location) {
 	
 })
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    projectile = sprites.createProjectileFromSprite(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . 2 2 3 3 3 3 2 . . . . 
-        . 2 2 2 3 3 1 1 1 1 1 3 2 . . . 
-        . 1 1 1 1 1 1 1 1 1 1 1 2 . . . 
-        . 2 2 2 3 3 1 1 1 1 1 3 2 . . . 
-        . . . . . 2 2 2 3 3 3 2 . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, mySprite, 100, 0)
-})
 controller.down.onEvent(ControllerButtonEvent.Released, function () {
     animation.stopAnimation(animation.AnimationTypes.All, mySprite)
 })
@@ -302,6 +282,26 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     100,
     true
     )
+    if (controller.A.isPressed()) {
+        mySprite.setImage(img`
+            ......ffff...............
+            ....fff22fff.............
+            ...fff2222fff............
+            ..fffeeeeeefff...........
+            ..ffe222222eef...........
+            ..fe2ffffff2ef...........
+            ..ffffeeeeffff...........
+            .ffefbf44fbfeff..........
+            .fee41fddf14eef..........
+            .3feeddddddeef...........
+            ...fee4444eef....ffff....
+            ..e4f222222f4efffffffffff
+            ..4df222222fd4fffffffff..
+            ..44f445544f44f...ff.....
+            .....ffffff......ff......
+            .....ff..ff.....ff.......
+            `)
+    }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.e3, function (sprite, otherSprite) {
     info.changeLifeBy(-3)
@@ -761,6 +761,44 @@ statusbars.onStatusReached(StatusBarKind.Health, statusbars.StatusComparison.LTE
 info.onLifeZero(function () {
     game.over(false, effects.dissolve)
 })
+controller.A.onEvent(ControllerButtonEvent.Repeated, function () {
+    mySprite.setImage(img`
+        ......ffff...............
+        ....fff22fff.............
+        ...fff2222fff............
+        ..fffeeeeeefff...........
+        ..ffe222222eef...........
+        ..fe2ffffff2ef...........
+        ..ffffeeeeffff...........
+        .ffefbf44fbfeff..........
+        .fee41fddf14eef..........
+        ..feeddddddeef...........
+        ...fee4444eef....ffff....
+        ..e4f222222f4efffffffffff
+        ..4df222222fd4fffffffff..
+        ..44f445544f44f...ff.....
+        .2...ffffff......ff......
+        .....ff..ff..............
+        `)
+    projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 2 2 3 3 3 3 2 . . . . 
+        . 2 2 2 3 3 1 1 1 1 1 3 2 . . . 
+        . 1 1 1 1 1 1 1 1 1 1 1 2 . . . 
+        . 2 2 2 3 3 1 1 1 1 1 3 2 . . . 
+        . . . . . 2 2 2 3 3 3 2 . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, mySprite, 100, 0)
+})
 sprites.onOverlap(SpriteKind.e1, SpriteKind.e2, function (sprite, otherSprite) {
     statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -5
     mySprite2.setVelocity(-100, 0)
@@ -970,9 +1008,9 @@ sprites.onOverlap(SpriteKind.e1, SpriteKind.e4, function (sprite, otherSprite) {
     statusbars.getStatusBarAttachedTo(StatusBarKind.EnemyHealth, otherSprite).value += -15
     mySprite2.setVelocity(-100, 0)
 })
+let projectile: Sprite = null
 let statusbar: StatusBarSprite = null
 let mySprite3: Sprite = null
-let projectile: Sprite = null
 let mySprite4: Sprite = null
 let mySprite5: Sprite = null
 let mySprite2: Sprite = null
