@@ -8,7 +8,9 @@
         "arcade-minimap": "github:microsoft/arcade-minimap#v0.6.1",
         "darts": "*",
         "animation": "*",
-        "controller": "*"
+        "controller": "*",
+        "sprite-scaling": "*",
+        "arcade-story": "github:microsoft/arcade-storytelling#v1.0.3"
     },
     "files": [
         "main.blocks",
